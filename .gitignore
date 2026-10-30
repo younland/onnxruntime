@@ -1,0 +1,13 @@
+# 构建缓存
+.gocache/
+
+# 头文件解析缓存（scripts/gen_api_go.py 使用）
+.tmp_headers/
+
+# 本地拉取的 onnxruntime 动态库（scripts/fetch_deps.ps1）
+lib/
+
+# 端到端测试模型与图片（scripts/fetch_deps.ps1 拉取，或自备放入）
+examples/yolo/testdata/*.onnx
+examples/yolo/testdata/*.png
+examples/yolo/testdata/*.jpg
