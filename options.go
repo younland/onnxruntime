@@ -96,6 +96,29 @@ func (o *SessionOptions) setFreeDimensionOverride(key string, dim int64, fn func
 	return o.engine.checkStatus(fn(o.handle, keyPtr, dim))
 }
 
+// AddConfigEntry 添加会话配置项，等价于 C API 的 OrtSessionOptionsAddSessionConfigEntry。
+//
+// 可设置任意 session.* 键值，例如消除空闲时的自旋占用：
+//
+//	opts.AddConfigEntry("session.intra_op.allow_spinning", "0")
+//
+// 常用键见 onnxruntime 文档（inter_op / intra_op / cpu.* 等命名空间）。
+// 需要在创建 Session 之前调用。
+func (o *SessionOptions) AddConfigEntry(key, value string) error {
+	if o.engine.funcs.addSessionConfigEntry == nil {
+		return errAPIUnavailable(idxAddSessionConfigEntry)
+	}
+	keyPtr, err := stringToCString(key)
+	if err != nil {
+		return err
+	}
+	valuePtr, err := stringToCString(value)
+	if err != nil {
+		return err
+	}
+	return o.engine.checkStatus(o.engine.funcs.addSessionConfigEntry(o.handle, keyPtr, valuePtr))
+}
+
 // Destroy 释放会话配置。
 func (o *SessionOptions) Destroy() {
 	if o.handle != 0 {

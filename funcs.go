@@ -54,6 +54,7 @@ type apiFuncs struct {
 	disableCpuMemArena               func(SessionOptionsHandle) StatusHandle
 	addFreeDimensionOverride         func(SessionOptionsHandle, *byte, int64) StatusHandle
 	addFreeDimensionOverrideByName   func(SessionOptionsHandle, *byte, int64) StatusHandle
+	addSessionConfigEntry            func(SessionOptionsHandle, *byte, *byte) StatusHandle
 
 	// session
 	createSession            func(EnvHandle, unsafe.Pointer, SessionOptionsHandle, *SessionHandle) StatusHandle
@@ -123,6 +124,7 @@ const (
 	idxGetAllocatorWithDefaultOptions   = 78
 	idxAddFreeDimensionOverride         = 79
 	idxAddFreeDimensionOverrideByName   = 80
+	idxAddSessionConfigEntry            = 130
 	idxReleaseEnv                       = 92
 	idxReleaseStatus                    = 93
 	idxReleaseMemoryInfo                = 94
@@ -197,6 +199,7 @@ func (e *Engine) bindAPIFuncs() {
 	bind(idxDisableCpuMemArena, &f.disableCpuMemArena, a.DisableCpuMemArena)
 	bind(idxAddFreeDimensionOverride, &f.addFreeDimensionOverride, a.AddFreeDimensionOverride)
 	bind(idxAddFreeDimensionOverrideByName, &f.addFreeDimensionOverrideByName, a.AddFreeDimensionOverrideByName)
+	bind(idxAddSessionConfigEntry, &f.addSessionConfigEntry, a.AddSessionConfigEntry)
 
 	// session
 	bind(idxCreateSession, &f.createSession, a.CreateSession)
